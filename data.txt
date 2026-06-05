@@ -1,0 +1,4 @@
+Video
+640x480px 25fps 32px/cm
+Referenzobjekt: 27,78px x 28,30px Dreieck [b x h]
+Annahme: Tracking des geometrischen Schwerpunktes des Dreiecks. 10% Messunsicherheit relativ zur Größe des Dreiecks. 28px * 0,1 = 2,8px (Stichpunkt Bloom-Effekt am CMOS Sensor)
