@@ -176,7 +176,7 @@ for filename, config in lookup_table.items():
 
     # output plot as file
     export_name = filename.replace(".csv", "_plot.pdf")
-    output_path = f"./data/{export_name}"
+    output_path = f"./data/out/{export_name}"
 
     plt.savefig(output_path, format="pdf", bbox_inches="tight")
 
