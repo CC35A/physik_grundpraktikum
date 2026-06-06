@@ -37,7 +37,16 @@ datasets = [
 def resonanz_kurve(f, A, f0, gamma):
     return A / np.sqrt((f0 ** 2 - f ** 2) ** 2 + (gamma * f) ** 2)
 
-fig, ax = plt.subplots(figsize=(6, 4))
+def phasenverschiebung(f, f0, gamma):
+    omega = 2 * np.pi * f
+    omega0 = 2 * np.pi * f0
+
+    phi = np.arctan2(gamma * omega, omega0**2 - omega**2) # formula for phase
+
+    return np.degrees(phi)
+
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
 
 for ds in datasets:
     # read data
@@ -49,26 +58,62 @@ for ds in datasets:
     f0_guess = f_data[np.argmax(A_data)]
     p0_guess = [max(A_data), f0_guess, 0.1]
 
-    popt, pcov = curve_fit(resonanz_kurve, f_data, A_data, p0=p0_guess, sigma=np.full_like(A_data, DELTA_A), absolute_sigma=True)
+    popt, pcov = curve_fit(
+        resonanz_kurve,
+        f_data,
+        A_data,
+        p0=p0_guess,
+        sigma=np.full_like(A_data, DELTA_A),
+        absolute_sigma=True,
+        bounds=([0, 0, 0], [np.inf, np.inf, np.inf])
+    )
+
+    A_fit, f0_fit, gamma_fit = popt
 
     perr = np.sqrt(np.diag(pcov))
-    f0_fit, f0_err = popt[1], perr[1]
+    A_err, f0_err, gamma_err = perr
 
-    print(f"Ergebnis für {ds['label']}: f0 = {f0_fit:.3f} +/- {f0_err:.3f} Hz")
+    print(f"--- Ergebnisse für {ds['label']} ---")
+    print(f"f0    = {f0_fit:.3f} +/- {f0_err:.3f} Hz")
+    print(f"gamma = {gamma_fit:.3f} +/- {gamma_err:.3f}\n")
 
-    ax.errorbar(f_data, A_data, xerr=DELTA_f, yerr=DELTA_A, fmt='o', color=ds["color"], alpha=0.8, capsize=3, markersize=2, label=ds["label"])
+    # plot datapoints with errorbar
+    ax1.errorbar(f_data, A_data, xerr=DELTA_f, yerr=DELTA_A, fmt='o', color=ds["color"], alpha=0.8, capsize=3, markersize=2, label=f"Messpunkt {ds["label"]}")
 
+    # plot amplitude fit curve
     f_fit = np.linspace(min(f_data), max(f_data), 200)
-    ax.plot(f_fit, resonanz_kurve(f_fit, *popt),
-            color=ds["color"], linestyle="--", label=fr"Fit {ds['label']} ($\gamma={popt[2]:.2f}$)")
+    ax1.plot(f_fit, resonanz_kurve(f_fit, *popt),color=ds["color"], linestyle="--", label=f"Fit {ds['label']}")
 
+    # plot phaseshift fit curve
+    phi_fit = phasenverschiebung(f_fit, f0_fit, gamma_fit)
+    ax2.plot(f_fit, phi_fit, color=ds["color"], linestyle="--", label=f"Fit {ds['label']}")
 
-ax.set_title("Resonanzkurvenvergleich")
-ax.set_xlabel("Frequenz $f$ [Hz]")
-ax.set_ylabel(r"Amplitude $A$ [a.u.]")
+    # uncertainty propagation through sampling
+    sample_params = np.random.multivariate_normal(popt, pcov, 1000)
 
-ax.grid(True, linestyle=":", alpha=0.6) # grid lines for better visibility
-ax.legend(loc="best")   # show legend
+    # params[1] is f0, params[2] is gamma
+    phi_samples = np.array([phasenverschiebung(f_fit, params[1], params[2]) for params in sample_params])
+
+    # one sigma rule
+    phi_lower = np.percentile(phi_samples, 16, axis=0)
+    phi_upper = np.percentile(phi_samples, 84, axis=0)
+
+    ax2.fill_between(f_fit, phi_lower, phi_upper, color=ds["color"], alpha=0.4)
+
+# styling for upper plot
+ax1.set_title("Resonanzkurvenvergleich")
+ax1.set_xlabel("Frequenz $f$ [Hz]")
+ax1.set_ylabel(r"Amplitude $A$ [a.u.]")
+ax1.grid(True, linestyle=":", alpha=0.6) # grid lines for better visibility
+ax1.legend(loc="best")   # show legend
+
+# styling for lower plot
+ax2.set_xlabel("Frequenz $f$ [Hz]")
+ax2.set_ylabel(r"Phase $\phi$ [°]")
+ax2.grid(True, linestyle=":", alpha=0.6) # grid lines for better visibility
+ax2.axhline(90, color=BLUE, linestyle=":", alpha=0.8, label="Resonanz (90°)")
+ax2.legend(loc="best")
+
 fig.tight_layout()  # optimize layout
 
 output_path = "./data/out/Resonanzkurven_plot.pdf"
