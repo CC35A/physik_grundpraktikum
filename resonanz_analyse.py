@@ -116,8 +116,11 @@ ax2.legend(loc="best")
 
 fig.tight_layout()  # optimize layout
 
-output_path = "./data/out/Resonanzkurven_plot.pdf"
-plt.savefig(output_path, format="pdf", bbox_inches="tight")
+output_path = "./data/out/Resonanzkurven_plot"
+
+plt.savefig(f"{output_path}.pdf", format="pdf", bbox_inches="tight")
+plt.savefig(f"{output_path}.png", format="png", bbox_inches="tight")
+
 print(f"Grafik erfolgreich gespeichert unter: {output_path}")
 
 plt.show()

@@ -175,10 +175,11 @@ for filename, config in lookup_table.items():
     fig.tight_layout()  # optimize layout
 
     # output plot as file
-    export_name = filename.replace(".csv", "_plot.pdf")
+    export_name = filename.replace(".csv", "_plot")
     output_path = f"./data/out/{export_name}"
 
-    plt.savefig(output_path, format="pdf", bbox_inches="tight")
+    plt.savefig(f"{output_path}.pdf", format="pdf", bbox_inches="tight")
+    plt.savefig(f"{output_path}.png", format="png", bbox_inches="tight")
 
     print(f"Grafik erfolgreich gespeichert unter: {output_path}")
     plt.show()
