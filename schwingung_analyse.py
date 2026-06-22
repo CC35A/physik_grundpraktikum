@@ -14,8 +14,8 @@ BLUE = "#383a6b"
 
 # camera calibration
 PX_TO_CM = 1 / 32.0
-DELTA_X = 2.8 * PX_TO_CM # = 0.04375 cm
-DELTA_Y = 2.8 * PX_TO_CM # = 0.04375 cm
+DELTA_X = 2.8 * PX_TO_CM # = 0.0875 cm
+DELTA_Y = 2.8 * PX_TO_CM # = 0.0875 cm
 
 lookup_table = {
     "Schwingung.csv": {
@@ -94,6 +94,14 @@ for filename, config in lookup_table.items():
     print(f"Mittlere Periodendauer (T): {T_mean:.4f} s")
     print(f"Logarithmisches Dekrement (Lambda): {lambda_calc:.4f}")
     print("-" * 35)
+
+    df_peaks = df.iloc[peaks][["Zeit [s]", "Winkel [Grad]"]]
+    
+    peaks_filename = filename.replace(".csv", "_peaks.csv")
+    peaks_output_path = f"./data/out/{peaks_filename}"
+
+    df_peaks.to_csv(peaks_output_path, sep=";", decimal=",", index=False)
+    print(f"Peaks erfolgreich gespeichert unter: {peaks_output_path}")
 
     # LaTeX config for matplotlib
     plt.rcParams.update(
