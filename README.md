@@ -30,10 +30,10 @@ Die gemessenen Amplituden $A$ wurden gegen die Erregerfrequenz $f$ aufgetragen. 
 
 *(Hinweis: Für die Einbindung in GitHub wurde die Grafik als PNG gerendert. Für das offizielle Versuchsprotokoll liegen die verlustfreien PDF-Vektorgrafiken im `/data/out/`-Ordner bereit.)*
 
-![Plot: Resonanzkurven und Phasenverschiebung](./data/out/Resonanzkurven_plot.png)
+![Plot: Resonanzkurven und Phasenverschiebung](dataut/Resonanzkurven_plot.png)
 
-![Plot: Schwingungen ungedämpft](./data/out/Schwingung_plot.png)
+![Plot: Schwingungen ungedämpft](dataut/Schwingung_plot.png)
 
-![Plot: Schwingungen 0,2A Dämpfung](./data/out/0.2ASchwingung_plot.png)
+![Plot: Schwingungen 0,2A Dämpfung](dataut/0.2ASchwingung_plot.png)
 
-![Plot: Schwingungen 0,4A Dämpfung](./data/out/0.4ASchwingung_plot.png)
+![Plot: Schwingungen 0,4A Dämpfung](dataut/0.4ASchwingung_plot.png)

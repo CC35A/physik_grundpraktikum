@@ -36,7 +36,7 @@ lookup_table = {
 }
 
 for filename, config in lookup_table.items():
-    file_path = f"./data/{filename}"
+    file_path = f"data/{filename}"
 
     if not os.path.exists(file_path):
         print(f"Überspringe {filename} - Datei nicht gefunden!")
@@ -98,7 +98,7 @@ for filename, config in lookup_table.items():
     df_peaks = df.iloc[peaks][["Zeit [s]", "Winkel [Grad]"]]
     
     peaks_filename = filename.replace(".csv", "_peaks.csv")
-    peaks_output_path = f"./data/out/{peaks_filename}"
+    peaks_output_path = f"data/out/{peaks_filename}"
 
     df_peaks.to_csv(peaks_output_path, sep=";", decimal=",", index=False)
     print(f"Peaks erfolgreich gespeichert unter: {peaks_output_path}")
@@ -184,7 +184,7 @@ for filename, config in lookup_table.items():
 
     # output plot as file
     export_name = filename.replace(".csv", "_plot")
-    output_path = f"./data/out/{export_name}"
+    output_path = f"data/out/{export_name}"
 
     plt.savefig(f"{output_path}.pdf", format="pdf", bbox_inches="tight")
     plt.savefig(f"{output_path}.png", format="png", bbox_inches="tight")
