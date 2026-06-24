@@ -1,6 +1,7 @@
-#  Versuch M30: Erzwungene Schwingung (Pohlsches Drehpendel)
+Dieses Repository enthält die Python-Skripte zur Auswertung des Physik-Praktikumsversuchs **M30 (Erzwungene Schwingung)** und **O20 (Brechungsindexbestimmung)**
 
-Dieses Repository enthält die Python-Skripte zur Auswertung des Physik-Praktikumsversuchs **M30 (Erzwungene Schwingung)**. 
+- [Versuch M30: Erzwungene Schwingung](#versuch-m30-erzwungene-schwingung-pohlsches-drehpendel)
+- [Versuch O20: Brechungsindexbestimmung](#versuch-o20-brechungsindexbestimmung-mit-dem-prismenspektralapparat)
 
 ##  Voraussetzungen & Bibliotheken
 
@@ -15,6 +16,13 @@ Die Abhängigkeiten können mittels pip installiert werden:
 `pip install numpy pandas matplotlib scipy`
 
 ##  Projektstruktur
+
+* `/M30/`: Enthält alles zum Versuch M30
+* `/O20/`: Enthält alles zum Versuch O20
+
+#  Versuch M30: Erzwungene Schwingung (Pohlsches Drehpendel)
+
+## Versuchsstruktur
 
 * `/data/`: Enthält die Rohdaten als `.csv`-Dateien.
 * `/data/out/`: Speicherort für die vom Skript generierten Diagramme.
@@ -37,3 +45,10 @@ Die gemessenen Amplituden $A$ wurden gegen die Erregerfrequenz $f$ aufgetragen. 
 ![Plot: Schwingungen 0,2A Dämpfung](M30/data/out/0.2ASchwingung_plot.png)
 
 ![Plot: Schwingungen 0,4A Dämpfung](M30/data/out/0.4ASchwingung_plot.png)
+
+
+#  Versuch O20: Brechungsindexbestimmung mit dem PrismenSpektralapparat
+
+### Diagramme
+
+![Plot: Prisma 1](O20/data/out/ablenkung_prisma_1.png)
