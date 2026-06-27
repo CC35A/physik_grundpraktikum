@@ -101,15 +101,15 @@ for ds in datasets:
     ax2.fill_between(f_fit, phi_lower, phi_upper, color=ds["color"], alpha=0.4)
 
 # styling for upper plot
-ax1.set_title("Resonanzkurvenvergleich")
-ax1.set_xlabel("Frequenz $f$ [Hz]")
-ax1.set_ylabel(r"Amplitude $A$ [a.u.]")
+#ax1.set_title("Resonanzkurvenvergleich")
+ax1.set_xlabel("Frequenz $f$ (Hz)")
+ax1.set_ylabel(r"Amplitude $A$ (LE)")
 ax1.grid(True, linestyle=":", alpha=0.6) # grid lines for better visibility
 ax1.legend(loc="best")   # show legend
 
 # styling for lower plot
-ax2.set_xlabel("Frequenz $f$ [Hz]")
-ax2.set_ylabel(r"Phase $\phi$ [°]")
+ax2.set_xlabel("Frequenz $f$ (Hz)")
+ax2.set_ylabel(r"Phase $\phi$ (°)")
 ax2.grid(True, linestyle=":", alpha=0.6) # grid lines for better visibility
 ax2.axhline(90, color=BLUE, linestyle=":", alpha=0.8, label="Resonanz (90°)")
 ax2.legend(loc="best")

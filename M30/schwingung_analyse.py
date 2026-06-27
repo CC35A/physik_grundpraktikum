@@ -132,6 +132,7 @@ for filename, config in lookup_table.items():
     )
 
     # fill in range of uncertainty
+    """
     ax.fill_between(
         df["Zeit [s]"],
         df["Winkel [Grad]"] - df["Fehler Winkel [Grad]"],
@@ -140,6 +141,7 @@ for filename, config in lookup_table.items():
         alpha=0.5,
         label="Messunsicherheit"
     )
+    """
 
     # plot peaks
     ax.plot(
@@ -156,16 +158,16 @@ for filename, config in lookup_table.items():
     ax.plot(
         t_fit,
         exp_decay(t_fit, phi_0_fit, delta_fit),
-        label=r"Fit",
+        label=r"Exponential-Fit",
         color=MAGENTA,
         linestyle="--",
         linewidth=1.5
     )
 
     # axis labels
-    ax.set_xlabel("Zeit $t$ [s]")
-    ax.set_ylabel(r"Auslenkwinkel $\varphi$ [°]")
-    ax.set_title(plot_title)
+    ax.set_xlabel("Zeit $t$ (s)")
+    ax.set_ylabel(r"Auslenkwinkel $\varphi$ (°)")
+    #ax.set_title(plot_title)
 
     # zoom
     ax.set_xlim(t1, t2)
