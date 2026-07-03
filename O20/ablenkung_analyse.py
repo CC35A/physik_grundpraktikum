@@ -21,12 +21,14 @@ lookup_table = {
         "lambdas_nm": np.array([404.7, 435.8, 491.6, 546.1, 577.0, 623.4]),
         "top_ticks": [404.7, 435.8, 491.6, 546.1, 577.0, 589.0, 623.4],
         "top_labels": ["violett", "blau", "grün", "hellgrün", "gelb", r"$n_d$", "rot"],
+        "number": 1,
     },
     "ablenkung_prisma_2": {
         "phi_deg": 60.55, # (261.7 - 140.6)/2
         "lambdas_nm": None,
         "top_ticks": [404.75, 435.8, 493.8, 546.1, 578.05, 589.0, 612.0, 671.0],
         "top_labels": ["violett", "blau", "grün", "hellgrün", "gelb", r"$n_d$", "rot", "rot"],
+        "number": 2
     },
 }
 
@@ -76,8 +78,18 @@ for filename, config in lookup_table.items():
 
     delta_delta_rad = np.radians(DELTA_ANGLE)
 
-    dn_ddelta = np.cos((delta_rad + phi_rad) / 2.0) / (2.0 * np.sin(phi_rad / 2.0))
-    n_err = np.abs(dn_ddelta) * delta_delta_rad
+    # error propagation using partial derivative
+    delta_delta_rad = np.radians(DELTA_ANGLE)
+    delta_phi_rad = np.radians(DELTA_ANGLE)
+
+    dn_ddelta = np.cos((delta_rad + phi_rad) / 2.0) / (
+            2.0 * np.sin(phi_rad / 2.0)
+    )
+    dn_dphi = -np.sin(delta_rad / 2.0) / (2.0 * (np.sin(phi_rad / 2.0) ** 2))
+
+    n_err = (np.abs(dn_ddelta) * delta_delta_rad) + (
+            np.abs(dn_dphi) * delta_phi_rad
+    )
 
     popt, pcov = curve_fit(sellmeier, lambdas_um, n_measured, p0=[1.1, 0.01])
     B_fit, C_fit = popt
@@ -98,7 +110,7 @@ for filename, config in lookup_table.items():
         color=BLUE,
         linestyle="-",
         linewidth=1.5,
-        label=f"Sellmeier-Fit ($B={B_fit:.4f}, C={C_fit:.5f}\\,\\mu\\mathrm{{m}}^2$)",
+        label=f"Sellmeier-Fit",
         zorder=2,
     )
 
@@ -112,7 +124,7 @@ for filename, config in lookup_table.items():
         elinewidth=1.2,
         capsize=3,
         markersize=5.5,
-        label="Messdaten Prisma 1 mit $\\Delta n$",
+        label=f"Messdaten Prisma {config["number"]} mit $\\Delta n$",
         zorder=3,
     )
 
@@ -205,6 +217,7 @@ for filename, config in lookup_table.items():
     ax.set_ylabel(r"Brechungsindex $n$")
 
     ax.grid(True, which="both", linestyle="--", alpha=0.4)
+    ax.legend(loc="best")
 
     plt.tight_layout()
     plt.savefig(f"data/out/{filename}.pdf")
@@ -220,5 +233,5 @@ for filename, config in lookup_table.items():
             df["Farbe"], lambdas_nm, n_measured, n_err
     ):
         print(
-            f"  {str(f_raw):10s} ({l:5.1f} nm): n = {n_val:.4f} +- {dn_val:.4f}"
+            f"  {str(f_raw):10s} ({l:5.1f} nm): n = {n_val:.4f} +- {dn_val:.5f}"
         )
