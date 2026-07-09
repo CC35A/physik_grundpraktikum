@@ -31,9 +31,9 @@ datasets = [
     {"path": "./data/silizium.csv", "label": "Silizium-Diode", "color": MAGENTA, "color_fit": BLUE},
 ]
 
-def linear_log_diode(V, m, ln_I_s):
+def linear_log_diode(U, m, ln_I_s):
     """Linearisierte Shockley-Gleichung: ln(I) = m * V + ln(I_s)"""
-    return m * V + ln_I_s
+    return m * U + ln_I_s
 
 
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -46,16 +46,16 @@ for ds in datasets:
     df = pd.read_csv(ds['path'], sep=";", decimal=",") # read german csv notation
     df = df[["Messung", "Strom", "Spannung"]]
 
-    V_mes = df["Spannung"].values
+    U_mes = df["Spannung"].values
     I_mes = df["Strom"].values
     ln_I_mes = np.log(I_mes)
 
-    popt, pcov = curve_fit(linear_log_diode, V_mes, ln_I_mes)
+    popt, pcov = curve_fit(linear_log_diode, U_mes, ln_I_mes)
     m_fit, ln_I_fit = popt
 
-    V_fit_line = np.linspace(df["Spannung"].min(), df["Spannung"].max(), 200)
+    U_line = np.linspace(df["Spannung"].min(), df["Spannung"].max(), 200)
 
-    ln_I_fit_line = linear_log_diode(V_fit_line, m_fit, ln_I_fit)
+    ln_I_fit_line = linear_log_diode(U_line, m_fit, ln_I_fit)
     I_fit_line = np.exp(ln_I_fit_line)
 
     ax.scatter(
@@ -67,7 +67,7 @@ for ds in datasets:
     )
 
     ax.plot(
-        V_fit_line,
+        U_line,
         I_fit_line,
         color=ds["color_fit"],
         linestyle="--",
