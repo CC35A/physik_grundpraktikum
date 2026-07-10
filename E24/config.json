@@ -1,0 +1,7 @@
+{
+    "LED_Rot": {
+        "filename": "LED_Rot.csv",
+        "title": "Rote LED",
+        "color": "#e03a3c"
+    }
+}

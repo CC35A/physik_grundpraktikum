@@ -91,4 +91,3 @@ plt.savefig(f"{output_path}.pdf", format="pdf", bbox_inches="tight")
 plt.savefig(f"{output_path}.png", format="png", bbox_inches="tight")
 
 plt.show()
-
